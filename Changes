@@ -1,6 +1,8 @@
 Revision history for VM-JiffyBox
 
 {{$NEXT}}
+
+0.005     2013-09-27 11:09:15 Europe/Zurich
           - renamed to Archive::TAP::Convert from Convert::TAP::Archive
 
 0.004     2013-08-02 11:25:55 Europe/Berlin
