@@ -82,7 +82,9 @@ __END__
 
 =head1 ABOUT
 
-This modul can be of help for you if you have TAP archives (e.g. created with C<prove -a> and now you wish to have the content of this archives in a special format like HTML or JUnit (or whatever format).
+This is a software library for the I<perl programming language>.
+
+The modul can be of help for you if you have TAP archives (e.g. created with C<prove -a> and now you wish to have the content of this archives in a special format like HTML or JUnit (or whatever format).
 
 =head1 SYNOPSIS
 

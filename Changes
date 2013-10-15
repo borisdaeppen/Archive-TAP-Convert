@@ -2,6 +2,9 @@ Revision history for VM-JiffyBox
 
 {{$NEXT}}
 
+0.006     2013-10-15 11:34:06 Europe/Zurich
+          - added keyword "perl programming language" to the docs
+
 0.005     2013-09-27 11:09:15 Europe/Zurich
           - renamed to Archive::TAP::Convert from Convert::TAP::Archive
 
