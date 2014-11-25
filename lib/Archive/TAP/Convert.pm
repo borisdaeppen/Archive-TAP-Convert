@@ -124,7 +124,7 @@ Or:
 The method takes three arguments.
 Only C<archive> is required.
 It takes the B<full> path to your TAP archive.
-The C<formatter> defaults to C<TAP::Formatter::HTML>, but you can give any other formatter.
+The C<formatter> defaults to C<TAP::Formatter::HTML>, but you can define any other formatter by string or even pass a reference to an existing formatter-object.
 The method will return the content of the TAP archive, parsed according to the formatter you have specified.
 
  my $html = convert_from_taparchive(
@@ -159,5 +159,15 @@ Used in this module: L<Test::Harness>
 =item *
 
 Available formatters: L<TAP::Formatter::Base> and its implementations for L<HTML|TAP::Formatter::HTML>, L<JUnit|TAP::Formatter::JUnit> or L<Console|TAP::Formatter::Console>.
+
+=back
+
+=head1 CONTRIBUTORS
+
+=over
+
+=item *
+
+Xavier Caron (XAV / maspalio)
 
 =back
