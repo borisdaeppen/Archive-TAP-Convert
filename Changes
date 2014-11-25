@@ -1,6 +1,11 @@
-Revision history for VM-JiffyBox
+Revision history for Archive-TAP-Convert
 
 {{$NEXT}}
+
+0.007     2014-11-25 18:20:57+01:00 Europe/Zurich (TRIAL RELEASE)
+          - accepts formatter object as an option (thx to maspalio)
+          - corrected head title in Changes file
+          - updated dist.ini to dzil v5 (encoding plugin)
 
 0.006     2013-10-15 11:34:06 Europe/Zurich
           - added keyword "perl programming language" to the docs
