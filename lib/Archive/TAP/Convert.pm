@@ -22,23 +22,30 @@ sub convert_from_taparchive {
     # Set default values:
     die 'no archive specified'
         unless (exists $args{archive});
-    $args{formatter} = 'TAP::Formatter::HTML'
-        unless (exists $args{formatter});
-    $args{force_inline} = 0
-        unless (exists $args{force_inline});
 
-    # This is the complicate but flexible version to:
-    #   use TAP::Formatter::HTML;
-    #   my $formatter = TAP::Formatter::HTML->new;
     my $formatter;
-    (my $require_name = $args{formatter} . ".pm") =~ s{::}{/}g;
-    eval {
-        require $require_name;
-        $formatter = $args{formatter}->new();
-    };  
-    die "Problems with formatter $args{formatter}"
-      . " at $require_name: $@"
-        if $@;
+
+    if ( exists $args{formatter} && ref ( $args{formatter} ) =~ /^TAP::Formatter::/ ) {
+      $formatter = $args{formatter};
+    }
+    else {
+      $args{formatter} = 'TAP::Formatter::HTML'
+          unless (exists $args{formatter});
+      $args{force_inline} = 0
+          unless (exists $args{force_inline});
+
+      # This is the complicate but flexible version to:
+      #   use TAP::Formatter::HTML;
+      #   my $formatter = TAP::Formatter::HTML->new;
+      (my $require_name = $args{formatter} . ".pm") =~ s{::}{/}g;
+      eval {
+          require $require_name;
+          $formatter = $args{formatter}->new();
+      };
+      die "Problems with formatter $args{formatter}"
+        . " at $require_name: $@"
+          if $@;
+    }
 
     # if set, include all CSS and JS in HTML file
     if ($args{force_inline}) {
@@ -48,22 +55,22 @@ sub convert_from_taparchive {
 
     # Now we do a lot of magic to convert this stuff...
 
-    my $harness = TAP::Harness->new({ formatter => $formatter }); 
+    my $harness = TAP::Harness->new({ formatter => $formatter });
 
     $formatter->really_quiet(1);
     $formatter->prepare;
 
     my $session;
-    my $aggregator = TAP::Harness::Archive->aggregator_from_archive({ 
+    my $aggregator = TAP::Harness::Archive->aggregator_from_archive({
         archive          => $args{archive},
         parser_callbacks => {
             ALL => sub {
                 $session->result( $_[0] );
-            },  
-        },  
+            },
+        },
         made_parser_callback => sub {
             $session = $formatter->open_test( $_[1], $_[0] );
-        }   
+        }
     });
 
     $aggregator->start;
@@ -88,12 +95,27 @@ The modul can be of help for you if you have TAP archives (e.g. created with C<p
 
 =head1 SYNOPSIS
 
- use Archive::TAP::Convert qw(convert_from_taparchive);
+Either:
 
- my $html = convert_from_taparchive(
+  use Archive::TAP::Convert qw(convert_from_taparchive);
+
+  my $html = convert_from_taparchive(
                 archive   => '/must/be/the/complete/path/to/test.tar.gz',
                 formatter => 'TAP::Formatter::HTML',
-            );
+             );
+
+Or:
+
+  use Archive::TAP::Convert qw(convert_from_taparchive);
+  use TAP::Formatter::HTML; # or ::JUnit, ::Console, etc.
+
+  my $formatter = TAP::Formatter::HTML->new;
+  # possibly configure formatter
+
+  my $html = convert_from_taparchive(
+                archive   => '/must/be/the/complete/path/to/test.tar.gz',
+                formatter => $formatter,
+             );
 
 =head1 EXPORTED METHODS
 
@@ -139,4 +161,3 @@ Used in this module: L<Test::Harness>
 Available formatters: L<TAP::Formatter::Base> and its implementations for L<HTML|TAP::Formatter::HTML>, L<JUnit|TAP::Formatter::JUnit> or L<Console|TAP::Formatter::Console>.
 
 =back
-
